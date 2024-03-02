@@ -1,15 +1,18 @@
-// File: LinkedList.cpp
-// Author: Sanket Mali
-// Date: 01/03/2024
-// Description: Implementation of Linked List data structure
+/*
+File: LinkedList.cpp
+Author: Sanket Mali
+Date: 01/03/2024
+Description: Implementation of Linked List data structure
+--------------------------------------------------------- */
 #include <iostream>
 using namespace std;
 
-// format each node
+// Node structure
 struct Node {
     int data;
     Node *next;
     Node(int data) : data(data), next(nullptr){}
+    // overload the << operator
     friend std::ostream& operator<<(std::ostream& os, const Node& node) {
         os << node.data;
         return os;
@@ -22,12 +25,12 @@ class LinkedList
     private:
         // keep track of the first node
         Node *head;
-        // keep track of the last node
-        Node *tail;
     public:
-        LinkedList();
+        LinkedList() : head(nullptr) {}
         LinkedList(int*, int);
         ~LinkedList();
+
+        //-----------------------------
         void insert_back(int);
         void insert_front(int);
         void insert_after(Node*, int);
@@ -37,6 +40,7 @@ class LinkedList
         void remove_front();
         Node* search(int);
         void print();
+        // overload the << operator
         friend std::ostream& operator<<(std::ostream& os, const LinkedList& list) {
             Node* itr = list.head;
             while(itr != nullptr) {
@@ -46,10 +50,6 @@ class LinkedList
             return os;
         }
 };
-
-LinkedList::LinkedList() {
-    this->head = nullptr;
-}
 
 LinkedList::LinkedList(int* arr, int size)
 {
@@ -110,6 +110,7 @@ void LinkedList::insert_after(Node* key, int data) {
     }
 }
 
+// function to search a integer value in the list
 Node* LinkedList::search(int key) {
     Node* itr = this->head;
     while(itr != nullptr) {
@@ -120,6 +121,7 @@ Node* LinkedList::search(int key) {
     return nullptr;
 }
 
+// function to print the linked list on console
 void LinkedList::print() {
     Node* itr = this->head;
     while(itr != nullptr) {
@@ -130,6 +132,7 @@ void LinkedList::print() {
     cout<<"-----------------------------------"<<endl;
 }
 
+// function to delete a node
 void LinkedList::remove(Node* dataNode) {
     Node* prevItr = nullptr;
     Node* itr = this->head;
@@ -145,6 +148,7 @@ void LinkedList::remove(Node* dataNode) {
     }
 }
 
+// function to delete a node with a specific data
 void LinkedList::remove(int data) {
     // search the node for the data
     Node* dataNode = this->search(data);
@@ -155,6 +159,30 @@ void LinkedList::remove(int data) {
     }
     else
         cout<<"Nothing to remove"<<endl;
+}
+
+
+// function to delete last node
+void LinkedList::remove_back() {
+    if(this->head) {
+        Node* prevItr = nullptr;
+        Node* itr = this->head;
+        while(itr->next != nullptr) {
+            prevItr = itr;
+            itr = itr->next;
+        }
+        prevItr->next = nullptr;
+        delete itr;
+    }
+}
+
+// function to delete first node
+void LinkedList::remove_front() {
+    if(this->head) {
+        Node* firstNode = this->head;
+        head = head->next;
+        delete firstNode;
+    }
 }
 
 int main() {
